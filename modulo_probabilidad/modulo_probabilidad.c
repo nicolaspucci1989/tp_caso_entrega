@@ -25,10 +25,9 @@ unsigned long get_random(unsigned long m_w, unsigned long m_z)
 }
 
 //Funciones de lectura y escritura invocadas por /proc fs.
-//lee
+//lectura
 static ssize_t cant_lecturas(struct file *filp,char *buf,
                         size_t count,loff_t *offp )
-//int cant_lecturas(char * page, char **start, off_t off, int count, int *eof, void *data)
 {
 		static int fin = 0;
     int len;
@@ -41,10 +40,9 @@ static ssize_t cant_lecturas(struct file *filp,char *buf,
     return len;
 }
 
-//escribe
+//escritura
 static ssize_t cambiar_semilla(struct file *filp,const char *buf,
                                   size_t count,loff_t *offp)
-//ssize_t cambiar_semilla(struct file *filp, const char __user *buff, unsigned long len, void *data)
 {
     copy_from_user(&input_semilla[0], buf, count);
     prev_random = simple_strtoul(input_semilla, NULL, 10);
