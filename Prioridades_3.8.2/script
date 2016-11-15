@@ -1,0 +1,13 @@
+#!/bin/bash
+	
+nice -n 2 ./loop1 > /dev/null &
+nice -n 2 ./loop2 > /dev/null &
+nice -n 0 ./loop3 > /dev/null &
+
+sleep 10s
+ps -o pid,state,time,%cpu,command | grep [l]oop > salida.txt
+
+for i in $(pgrep loop) 
+do
+	kill $i
+done
