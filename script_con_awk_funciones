@@ -1,0 +1,43 @@
+#!/bin/bash
+
+function imprimir_info_usuario(){
+	informacion_usuario=$(echo $1 | awk -F: 'BEGIN{OFS="\t"}{print $2,$3}')
+	IFS=","
+	for usuario in $2
+	do 
+		echo "$usuario	$informacion_usuario"
+	done
+}
+
+function funcion_usuario(){
+	if [ -z $1 ]; then
+	 sed 's/:/	/g' usuarios	
+	else
+		usuario=$(grep ^$1: usuarios )
+		if [ -z $usuario ]; then
+			echo "Usuario no encontrado"
+		else
+			echo $usuario | sed 's/:/	/g'
+		fi
+	fi
+}
+
+function funcion_grupo(){
+grupo=$(grep ^$1: texto)
+	if [ -z "$grupo" ]; then #si no existe el grupo
+		echo "No hay grupo" 
+	else
+		usuarios=$(echo $grupo | awk -F: '{print $4}')
+		if [ -z "$usuarios" ]; then #si la variable usuario esta vacia
+			echo "Grupo sin usuarios" 
+		else
+			imprimir_info_usuario "$grupo" "$usuarios"
+		fi
+	fi
+}
+
+case "$1" in
+	-u) funcion_usuario $2 ;;
+	-g) funcion_grupo $2 ;;
+	*) echo "Opcion incorrecta" ;;
+esac
